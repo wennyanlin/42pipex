@@ -1,0 +1,12 @@
+*.o
+*.d
+a.out
+infile
+outfile
+tester.c
+pipex
+pipex-tester/
+PipexTester/
+pipex_tester_42/
+.DS_Store
+pipex.dSYM/
