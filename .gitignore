@@ -10,3 +10,4 @@ PipexTester/
 pipex_tester_42/
 .DS_Store
 pipex.dSYM/
+*.txt

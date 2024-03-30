@@ -6,7 +6,7 @@
 #    By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 22:21:23 by wlin              #+#    #+#              #
-#    Updated: 2024/03/28 22:21:24 by wlin             ###   ########.fr        #
+#    Updated: 2024/03/30 19:11:20 by wlin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ CFLAGS := -Wall -Wextra -Werror -MMD -g
 SRC_DIR		:=	src
 
 SRC_FILES	:=	$(SRC_DIR)/pipex.c \
+				$(SRC_DIR)/find_path.c \
+				$(SRC_DIR)/pipe.c \
 				$(SRC_DIR)/split.c \
 				$(SRC_DIR)/string.c \
 

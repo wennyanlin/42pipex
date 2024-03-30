@@ -6,13 +6,14 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/29 18:26:28 by wlin             ###   ########.fr       */
+/*   Updated: 2024/03/30 19:33:46 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+//LIB
 # include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,13 +21,21 @@
 #include <string.h>
 #include <errno.h>
 
+//MACRO
+# define INVALID -1
+# define NEGATIVE 0
+# define CHILD 0
+# define WR 1
+# define RD 0
+
+
 typedef struct s_str
 {
 	char	*value;
 	int		continue_from_index;
 }	t_str;
 
-char	*execute_command(char *cmd1, char **envp);
+char	*execute_command(char *cmd1, char **cmd_args);
 char	**split(char *string, char separator);
 int		count_words(char *string, char separator);
 t_str	get_next_word(char *string, char separator, int continue_from);
@@ -34,16 +43,18 @@ t_str	parse_string(char *string, char separator, int continue_from);
 char	*string_concat(char *path, char *cmd);
 size_t  ft_strlen(char *str);
 char	*find_path(char *env, char *cmd);
-int		redirect_stdin(char *infile, char *cmd1, char *cmd2, char *outfile, char **envp);
+// int		redirect_stdin(char *infile, char *cmd1, char *cmd2, char *outfile, char **envp);
 char	*get_env(char **strs, char *ref);
 int		string_compare(char *str1, char *str2, int until);
 char	**array_concat(char *shell_path, char **args);
 void	perror_and_exit(char *file, int code);
-void	child_process(int pipefd[2], char *cmd1, char **envp);
-void	parent_process(int pipefd[2], int fd2, char *cmd2, char **envp);
+// void	child_process(int pipefd[2], char *cmd1, char **envp);
+// void	parent_process(int pipefd[2], int fd2, char *cmd2, char **envp);
 void	fd_dup2(int oldfd, int newfd);
 t_str	chars_copy(t_str result, char *string, int len, int end);
 int		is_empty_command(char *cmd);
+void	free_array(char **array);
+void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override);
 
 #endif
 
