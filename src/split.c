@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   ft_split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:15 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/28 22:21:16 by wlin             ###   ########.fr       */
+/*   Updated: 2024/03/31 22:10:56 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_str	get_next_word(char *string, char separator, int	continue_from)
 	return (next_word);
 }
 
-char	**split(char *string, char separator)
+char	**ft_split(char *string, char separator)
 {
 	char	**result_array;
 	int		num_words;
@@ -128,7 +128,7 @@ char	**split(char *string, char separator)
 // int	main(int argc, char **argv)
 // {
 // 	int i = 0;
-// 	char **result = split(argv[1], ' ');
+// 	char **result = ft_split(argv[1], ' ');
 
 // 	while (i < 4)
 // 	{

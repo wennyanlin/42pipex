@@ -65,7 +65,7 @@ void    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int ar
     fd_in = infile_fd;
     while (all_cmds[++i] && i < (argc - 1))
     {   //execve() requires the command full path
-        cmd_args = split(all_cmds[i], ' ');
+        cmd_args = ft_split(all_cmds[i], ' ');
         cmd_path = find_path(get_env(envp, "PATH"), cmd_args[0]);
         if (i == argc - 2)
         {
