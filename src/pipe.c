@@ -80,14 +80,3 @@ void    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int ar
     while (++j < (argc - 1))
         wait(NULL);
 }
-
-int	main(int argc, char **argv, char **envp)
-{
-    int     *fd_array;
-
-	if (argc != 5)
-		return (0);
-    fd_array = create_fd(argv[1], argv[argc - 1]);
-    //a function to pass in only commands
-    pipe_all(argv, fd_array[0], fd_array[1], envp, argc);
-}

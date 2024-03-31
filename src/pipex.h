@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/30 19:33:46 by wlin             ###   ########.fr       */
+/*   Updated: 2024/03/31 18:54:29 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_str	chars_copy(t_str result, char *string, int len, int end);
 int		is_empty_command(char *cmd);
 void	free_array(char **array);
 void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override);
-
+int 	*create_fd(char *infile, char *outfile);
+void    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int argc);
 #endif
 
