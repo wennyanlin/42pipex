@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/31 15:18:08 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/01 17:23:38 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ int	is_empty_command(char *cmd)
 	return (flag);
 }
 
-char	*execute_command(char *command_path, char **cmd_args)
+char	*execute_command(char *command_path, char **cmd_args, char **envp)
 {
 	char	**result_array_concat = NULL;
 
-	execve(command_path, cmd_args, 0);
+	execve(command_path, cmd_args, envp);
 	free(command_path);
 	command_path = NULL;
 	if (errno == 8) 
 	{
 		result_array_concat = array_concat("/bin/sh", cmd_args);
-		execve("/bin/sh", result_array_concat, 0);
+		execve("/bin/sh", result_array_concat, envp);
 		free_array(cmd_args);
 		cmd_args = NULL;
 		free_array(result_array_concat);

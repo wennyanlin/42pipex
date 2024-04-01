@@ -1,13 +1,13 @@
 #include "pipex.h"
 
-void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override)
+void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override, char **envp)
 {
 	close(pipefd[RD]);
     if (fd_out_override != NEGATIVE)
         fd_dup2(fd_out_override, STDOUT_FILENO);
     else
 	    fd_dup2(pipefd[WR], STDOUT_FILENO);
-	execute_command(cmd1, cmd_args);
+	execute_command(cmd1, cmd_args, envp);
 	exit(EXIT_SUCCESS);
 }
 
@@ -31,7 +31,7 @@ int *create_fd(char *infile, char *outfile)
     return (fd_array);
 }
 
-int create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_override)
+int create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_override, char **envp)
 {
     int pipe_fd[2];
     int process_id;
@@ -45,7 +45,7 @@ int create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_overri
     else if (process_id == CHILD)
     {
         fd_dup2(fd_in, STDIN_FILENO);
-        child_process(pipe_fd, cmd_path, cmd_args, fd_out_override);
+        child_process(pipe_fd, cmd_path, cmd_args, fd_out_override, envp);
     }
     fd_out = pipe_fd[RD];
     close(fd_in);
@@ -69,12 +69,12 @@ void    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int ar
         cmd_path = find_path(get_env(envp, "PATH"), cmd_args[0]);
         if (i == argc - 2)
         {
-            fd_in = create_process(fd_in, cmd_path, cmd_args, fd_out);
+            fd_in = create_process(fd_in, cmd_path, cmd_args, fd_out, envp);
             close(fd_in);
             close(fd_out);
         }
         else
-            fd_in = create_process(fd_in, cmd_path, cmd_args, NEGATIVE);
+            fd_in = create_process(fd_in, cmd_path, cmd_args, NEGATIVE, envp);
     }
     j = 1;
     while (++j < (argc - 1))

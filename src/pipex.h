@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/31 22:59:23 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/01 17:20:29 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_str
 	int		continue_from_index;
 }	t_str;
 
-char	*execute_command(char *cmd1, char **cmd_args);
+char	*execute_command(char *cmd1, char **cmd_args, char **envp);
 char	**ft_split(char *string, char separator);
 int		count_words(char *string, char separator);
 t_str	get_next_word(char *string, char separator, int continue_from);
@@ -54,7 +54,7 @@ void	fd_dup2(int oldfd, int newfd);
 t_str	chars_copy(t_str result, char *string, int len, int end);
 int		is_empty_command(char *cmd);
 void	free_array(char **array);
-void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override);
+void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override, char **envp);
 int 	*create_fd(char *infile, char *outfile);
 void    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int argc);
 int		array_size(char **array);
