@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/01 17:20:29 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/02 13:31:25 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define CHILD 0
 # define WR 1
 # define RD 0
+# define ENOCMD 2
 
 
 typedef struct s_str
@@ -35,7 +36,7 @@ typedef struct s_str
 	int		continue_from_index;
 }	t_str;
 
-char	*execute_command(char *cmd1, char **cmd_args, char **envp);
+void	execute_command(char *cmd1, char **cmd_args, char **envp);
 char	**ft_split(char *string, char separator);
 int		count_words(char *string, char separator);
 t_str	get_next_word(char *string, char separator, int continue_from);

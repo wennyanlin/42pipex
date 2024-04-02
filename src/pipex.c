@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/01 17:23:38 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/02 13:46:55 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,15 @@ int	is_empty_command(char *cmd)
 	return (flag);
 }
 
-char	*execute_command(char *command_path, char **cmd_args, char **envp)
+void	execute_command(char *command_path, char **cmd_args, char **envp)
 {
 	char	**result_array_concat = NULL;
 
 	execve(command_path, cmd_args, envp);
 	free(command_path);
 	command_path = NULL;
-	if (errno == 8) 
+	
+	if (errno == ENOEXEC) 
 	{
 		result_array_concat = array_concat("/bin/sh", cmd_args);
 		execve("/bin/sh", result_array_concat, envp);
@@ -77,7 +78,10 @@ char	*execute_command(char *command_path, char **cmd_args, char **envp)
 		result_array_concat = NULL;
 	}
 	else if (errno == ENOENT)
-		perror(command_path);
-	perror(command_path);
-	return (0);
+	{
+		write(STDERR_FILENO, cmd_args[0], ft_strlen(cmd_args[0]));
+		write(STDERR_FILENO, ": command not found\n", 20);
+	}
+	else
+		perror_and_exit(cmd_args[0], EXIT_FAILURE);
 }
