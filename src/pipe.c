@@ -8,7 +8,7 @@ void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_overri
     else
 	    fd_dup2(pipefd[WR], STDOUT_FILENO);
 	execute_command(cmd1, cmd_args, envp);
-	exit(EXIT_SUCCESS);
+	exit(127); //modificado
 }
 
 int *create_fd(char *infile, char *outfile)
@@ -40,10 +40,14 @@ int create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_overri
     if (pipe(pipe_fd) == INVALID)
         perror_and_exit("pipe", EXIT_FAILURE);
     process_id = fork();
+    printf("%d\n", process_id);
     if (process_id == INVALID)
         perror_and_exit("fork", EXIT_FAILURE);
     else if (process_id == CHILD)
     {
+        int i = 1;
+        while (i)
+            ;
         fd_dup2(fd_in, STDIN_FILENO);
         child_process(pipe_fd, cmd_path, cmd_args, fd_out_override, envp);
     }
@@ -53,10 +57,26 @@ int create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_overri
     return (fd_out);
 }
 
-void    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int argc)
+int get_wait_status(pid_t status)
+{
+    int stat_code;
+
+    stat_code = 0;
+    if (WIFEXITED(status))
+        stat_code = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+        stat_code = WTERMSIG(status);
+    else if (WIFSTOPPED(status))
+        stat_code = WSTOPSIG(status);
+    return (stat_code);
+}
+
+int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int argc)
 {   //handle command starts at [2] end at [end - 1]
     int     i;
     int     j;
+    pid_t   status;
+    int     stat_code;
     int     fd_in;
     char    *cmd_path;
     char    **cmd_args;
@@ -77,6 +97,9 @@ void    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int ar
             fd_in = create_process(fd_in, cmd_path, cmd_args, NEGATIVE, envp);
     }
     j = 1;
+    status = 1;
     while (++j < (argc - 1))
-        wait(NULL);
+        wait(&status);
+    stat_code = get_wait_status(status);
+    return (stat_code);
 }
