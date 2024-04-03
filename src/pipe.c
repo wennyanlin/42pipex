@@ -40,14 +40,12 @@ int create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_overri
     if (pipe(pipe_fd) == INVALID)
         perror_and_exit("pipe", EXIT_FAILURE);
     process_id = fork();
-    printf("%d\n", process_id);
     if (process_id == INVALID)
         perror_and_exit("fork", EXIT_FAILURE);
     else if (process_id == CHILD)
     {
-        int i = 1;
-        while (i)
-            ;
+        if (fd_in == -1)
+            return (-1);
         fd_dup2(fd_in, STDIN_FILENO);
         child_process(pipe_fd, cmd_path, cmd_args, fd_out_override, envp);
     }
@@ -106,8 +104,8 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int arg
         wait(NULL);
         if (j == argc - 2)
         {
-        wait(&status);
-    stat_code = get_wait_status(status);
+            wait(&status);
+            stat_code = get_wait_status(status);
         }
     }
     return (stat_code);
