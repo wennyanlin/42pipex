@@ -16,7 +16,8 @@ char	*find_path(char *env, char *cmd)
 	char 	*full_path;
 	char 	**path_dirs;
 
-	// printf("env: %s\n", env);
+	if (!env)
+		return (cmd);	
 	if (ft_strchr(cmd, '/') != NEGATIVE)
 		return (cmd);
 	path_dirs = ft_split(env, ':');

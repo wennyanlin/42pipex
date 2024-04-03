@@ -80,13 +80,16 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int arg
     int     fd_in;
     char    *cmd_path;
     char    **cmd_args;
+    char    *all_paths;
 
     i = 1;
-    fd_in = infile_fd;
+    fd_in = infile_fd; //here may need to handle if infile is invalid;
     while (all_cmds[++i] && i < (argc - 1))
-    {   //execve() requires the command full path
+    {
         cmd_args = ft_split(all_cmds[i], ' ');
-        cmd_path = find_path(get_env(envp, "PATH"), cmd_args[0]);
+        all_paths = get_env(envp, "PATH");
+
+        cmd_path = find_path(all_paths, cmd_args[0]);
         if (i == argc - 2)
         {
             fd_in = create_process(fd_in, cmd_path, cmd_args, fd_out, envp);
