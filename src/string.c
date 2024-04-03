@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/31 22:22:17 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/03 23:53:19 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 int	ft_strchr(char *str, char ref)
 {
 	int	i;
-	
+
 	i = -1;
 	if (!*str || !str)
-		return (0);
+		return (-1);
 	while (str[++i])
 		if (str[i] == ref)
 			return (i);
-	return (0);
+	return (-1);
 }
 
 int	string_compare(char *str1, char *str2, int until)

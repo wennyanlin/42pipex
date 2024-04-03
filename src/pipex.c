@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/03 22:15:22 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/03 23:55:13 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,13 @@ void	execute_command(char *command_path, char **cmd_args, char **envp)
 	}
 	else if (errno == ENOENT)
 	{
-		write(STDERR_FILENO, cmd_args[0], ft_strlen(cmd_args[0]));
-		write(STDERR_FILENO, ": command not found\n", 20);
+		if (ft_strchr(cmd_args[0], '/') != INVALID)
+			perror(cmd_args[0]);
+		else
+		{
+			write(STDERR_FILENO, cmd_args[0], ft_strlen(cmd_args[0]));
+			write(STDERR_FILENO, ": command not found\n", 20);
+		}
 	}
 	else
 		perror_and_exit(cmd_args[0], EXIT_FAILURE);
