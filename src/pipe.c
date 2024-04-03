@@ -97,9 +97,15 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int arg
             fd_in = create_process(fd_in, cmd_path, cmd_args, NEGATIVE, envp);
     }
     j = 1;
-    status = 1;
+    status = 0;
     while (++j < (argc - 1))
+    {
+        wait(NULL);
+        if (j == argc - 2)
+        {
         wait(&status);
     stat_code = get_wait_status(status);
+        }
+    }
     return (stat_code);
 }
