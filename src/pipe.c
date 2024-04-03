@@ -46,7 +46,9 @@ t_pipe create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_ove
         if (fd_in == -1)
         {
             state.fd_in = -1;
-            return (state);
+            close(pipe_fd[WR]);
+            close(pipe_fd[RD]);
+            exit(127);
         }
         fd_dup2(fd_in, STDIN_FILENO);
         child_process(pipe_fd, cmd_path, cmd_args, fd_out_override, envp);
