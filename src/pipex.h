@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/02 17:22:28 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/03 21:58:39 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,13 @@ typedef struct s_str
 {
 	char	*value;
 	int		continue_from_index;
-}	t_str;
+}			t_str;
+
+typedef struct s_pipe
+{
+	pid_t	pid;
+	int		fd_in;
+}			t_pipe;
 
 void	execute_command(char *cmd1, char **cmd_args, char **envp);
 char	**ft_split(char *string, char separator);

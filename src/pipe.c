@@ -31,31 +31,33 @@ int *create_fd(char *infile, char *outfile)
     return (fd_array);
 }
 
-int create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_override, char **envp)
+t_pipe create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_override, char **envp)
 {
     int pipe_fd[2];
-    int process_id;
-    int fd_out;
+    t_pipe  state;
 
     if (pipe(pipe_fd) == INVALID)
         perror_and_exit("pipe", EXIT_FAILURE);
-    process_id = fork();
-    if (process_id == INVALID)
+    state.pid = fork();
+    if (state.pid == INVALID)
         perror_and_exit("fork", EXIT_FAILURE);
-    else if (process_id == CHILD)
+    else if (state.pid == CHILD)
     {
         if (fd_in == -1)
-            return (-1);
+        {
+            state.fd_in = -1;
+            return (state);
+        }
         fd_dup2(fd_in, STDIN_FILENO);
         child_process(pipe_fd, cmd_path, cmd_args, fd_out_override, envp);
     }
-    fd_out = pipe_fd[RD];
+    state.fd_in = pipe_fd[RD];
     close(fd_in);
     close(pipe_fd[WR]);
-    return (fd_out);
+    return (state);
 }
 
-int get_wait_status(pid_t status)
+int get_wait_status(int *status)
 {
     int stat_code;
 
@@ -66,6 +68,7 @@ int get_wait_status(pid_t status)
         stat_code = WTERMSIG(status);
     else if (WIFSTOPPED(status))
         stat_code = WSTOPSIG(status);
+    // printf("stat_code: '%d'\n", stat_code);
     return (stat_code);
 }
 
@@ -73,15 +76,16 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int arg
 {   //handle command starts at [2] end at [end - 1]
     int     i;
     int     j;
-    pid_t   status;
+    int     *status;
     int     stat_code;
-    int     fd_in;
+    pid_t   pid;
     char    *cmd_path;
     char    **cmd_args;
     char    *all_paths;
+    t_pipe  state;
 
     i = 1;
-    fd_in = infile_fd; //here may need to handle if infile is invalid;
+    state.fd_in = infile_fd; //here may need to handle if infile is invalid;
     while (all_cmds[++i] && i < (argc - 1))
     {
         cmd_args = ft_split(all_cmds[i], ' ');
@@ -90,23 +94,23 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int arg
         cmd_path = find_path(all_paths, cmd_args[0]);
         if (i == argc - 2)
         {
-            fd_in = create_process(fd_in, cmd_path, cmd_args, fd_out, envp);
-            close(fd_in);
-            close(fd_out);
+            state = create_process(state.fd_in, cmd_path, cmd_args, fd_out, envp);
+            close(state.fd_in);
+            close(fd_out);// close outfile
         }
         else
-            fd_in = create_process(fd_in, cmd_path, cmd_args, NEGATIVE, envp);
+            state = create_process(state.fd_in, cmd_path, cmd_args, NEGATIVE, envp);
+        //here shouldn't we close fds when t
     }
     j = 1;
-    status = 0;
+    status = NULL;
     while (++j < (argc - 1))
     {
-        wait(NULL);
-        if (j == argc - 2)
-        {
-            wait(&status);
+        pid = wait(NULL);
+        if (pid == state.pid)
             stat_code = get_wait_status(status);
-        }
+        else
+            get_wait_status(status);    
     }
     return (stat_code);
 }

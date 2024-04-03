@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/02 13:46:55 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/03 22:15:22 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,9 @@ void	execute_command(char *command_path, char **cmd_args, char **envp)
 	free(command_path);
 	command_path = NULL;
 	
-	if (errno == ENOEXEC) 
+	if (errno == ENOEXEC)//x
 	{
+		// printf("attempting with bash\n");
 		result_array_concat = array_concat("/bin/sh", cmd_args);
 		execve("/bin/sh", result_array_concat, envp);
 		free_array(cmd_args);
