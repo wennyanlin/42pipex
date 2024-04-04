@@ -23,11 +23,11 @@ int	main(int argc, char **argv, char **envp)
     
 	if (argc < 5)
 		return (EXIT_FAILURE);
-    if (ft_strlen(argv[1]) == 8 && string_compare(argv[1], "here_doc", 8))
+    if (str_size(argv[1]) == 8 && string_compare(argv[1], "here_doc", 8))
     {
         next_line = get_next_line(STDIN_FILENO);
         pipe(pipe_fd);
-        write(pipe_fd[WR], next_line, ft_strlen(next_line));
+        write(pipe_fd[WR], next_line, str_size(next_line));
         cmds = extract_cmds(argv, argc, 3);
         // need to open outfile
     }

@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/04 11:19:59 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/04 16:04:34 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		count_words(char *string, char separator);
 t_str	get_next_word(char *string, char separator, int continue_from);
 t_str	parse_string(char *string, char separator, int continue_from);
 char	*string_concat(char *path, char *cmd);
-size_t  ft_strlen(const char *str);
+size_t  str_size(const char *str);
 char	*find_path(char *env, char *cmd);
 // int		redirect_stdin(char *infile, char *cmd1, char *cmd2, char *outfile, char **envp);
 char	*get_env(char **strs, char *ref);

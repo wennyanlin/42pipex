@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/04 11:16:48 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/04 16:05:39 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_env(char **strs, char *ref)
 	char	**array;
 	
 	i = 0;
-	ref_len = ft_strlen(ref);
+	ref_len = str_size(ref);
 	while (strs[i])
 	{
 		until = char_index(strs[i], '=');
@@ -64,7 +64,7 @@ char	*get_env(char **strs, char *ref)
 	return (NULL);
 }
 
-size_t	ft_strlen(const char *str)
+size_t	str_size(const char *str)
 {
 	size_t	len;
 
@@ -94,8 +94,8 @@ char	*string_concat(char *path, char *cmd)
 	size_t	total_len;
 	size_t	i;
 
-	path_len = ft_strlen(path);
-	cmd_len = ft_strlen(cmd);
+	path_len = str_size(path);
+	cmd_len = str_size(cmd);
 	total_len = path_len + cmd_len;
 	result_path = malloc(sizeof(char) * (total_len + 1));
 	if (!result_path)
