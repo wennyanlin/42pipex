@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/29 18:59:42 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/03 23:53:19 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 int	ft_strchr(char *str, char ref)
 {
 	int	i;
-	
+
 	i = -1;
 	if (!*str || !str)
-		return (0);
+		return (-1);
 	while (str[++i])
 		if (str[i] == ref)
 			return (i);
-	return (0);
+	return (-1);
 }
 
 int	string_compare(char *str1, char *str2, int until)
@@ -39,11 +39,13 @@ int	string_compare(char *str1, char *str2, int until)
 	return (1);
 }
 
+
 char	*get_env(char **strs, char *ref)
 {
-	int	i;
-	int	until;
-	int	ref_len;
+	int		i;
+	int		until;
+	int		ref_len;
+	char	**array;
 	
 	i = 0;
 	ref_len = ft_strlen(ref);
@@ -51,7 +53,12 @@ char	*get_env(char **strs, char *ref)
 	{
 		until = ft_strchr(strs[i], '=');
 		if (until == ref_len && string_compare(strs[i], ref, until))
-			return (strs[i]);
+		{
+			array = ft_split(strs[i], '=');
+			if (!array || !array[1])
+				return (NULL);
+			return (array[1]);
+		}
 		i++;
 	}
 	return (NULL);
