@@ -74,7 +74,7 @@ int get_wait_status(int *status)
     return (stat_code);
 }
 
-int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int argc)
+int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
 {   //handle command starts at [2] end at [end - 1]
     int     i;
     int     j;
@@ -85,16 +85,17 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int arg
     char    **cmd_args;
     char    *all_paths;
     t_pipe  state;
+    int     all_cmds_len;
 
-    i = 1;
+    i = -1;
+    all_cmds_len = array_size(all_cmds);
     state.fd_in = infile_fd; //here may need to handle if infile is invalid;
-    while (all_cmds[++i] && i < (argc - 1))
+    while (all_cmds[++i])
     {
         cmd_args = ft_split(all_cmds[i], ' ');
         all_paths = get_env(envp, "PATH");
-
         cmd_path = find_path(all_paths, cmd_args[0]);
-        if (i == argc - 2)
+        if (i == all_cmds_len - 1)
         {
             state = create_process(state.fd_in, cmd_path, cmd_args, fd_out, envp);
             close(state.fd_in);
@@ -106,7 +107,7 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp, int arg
     }
     j = 1;
     status = NULL;
-    while (++j < (argc - 1))
+    while (++j < all_cmds_len)
     {
         pid = wait(NULL);
         if (pid == state.pid)

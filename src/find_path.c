@@ -18,7 +18,7 @@ char	*find_path(char *env, char *cmd)
 
 	if (!env)
 		return (cmd);	
-	if (ft_strchr(cmd, '/') != INVALID)
+	if (char_index(cmd, '/') != INVALID)
 		return (cmd);
 	path_dirs = ft_split(env, ':');
 	free(env);

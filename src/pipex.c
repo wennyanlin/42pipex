@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/03 23:55:13 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/04 11:11:40 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	execute_command(char *command_path, char **cmd_args, char **envp)
 	}
 	else if (errno == ENOENT)
 	{
-		if (ft_strchr(cmd_args[0], '/') != INVALID)
+		if (char_index(cmd_args[0], '/') != INVALID)
 			perror(cmd_args[0]);
 		else
 		{

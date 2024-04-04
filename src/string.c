@@ -6,13 +6,13 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/03 23:53:19 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/04 11:16:48 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_strchr(char *str, char ref)
+int	char_index(char *str, char ref)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ char	*get_env(char **strs, char *ref)
 	ref_len = ft_strlen(ref);
 	while (strs[i])
 	{
-		until = ft_strchr(strs[i], '=');
+		until = char_index(strs[i], '=');
 		if (until == ref_len && string_compare(strs[i], ref, until))
 		{
 			array = ft_split(strs[i], '=');
@@ -64,7 +64,7 @@ char	*get_env(char **strs, char *ref)
 	return (NULL);
 }
 
-size_t	ft_strlen(char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	len;
 
@@ -74,6 +74,16 @@ size_t	ft_strlen(char *str)
 	while (str[len])
 		len++;
 	return(len);
+}
+
+int	array_size(char **array)
+{
+	int	i;
+	
+	i = 0;
+	while (array[1])
+		i++;
+	return (i);
 }
 
 char	*string_concat(char *path, char *cmd)
