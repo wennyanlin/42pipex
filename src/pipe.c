@@ -70,7 +70,6 @@ int get_wait_status(int *status)
         stat_code = WTERMSIG(status);
     else if (WIFSTOPPED(status))
         stat_code = WSTOPSIG(status);
-    // printf("stat_code: '%d'\n", stat_code);
     return (stat_code);
 }
 
@@ -89,7 +88,7 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
 
     i = -1;
     all_cmds_len = array_size(all_cmds);
-    state.fd_in = infile_fd; //here may need to handle if infile is invalid;
+    state.fd_in = infile_fd; //here may need to handle if infile is invalid
     while (all_cmds[++i])
     {
         cmd_args = ft_split(all_cmds[i], ' ');
@@ -105,7 +104,7 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
             state = create_process(state.fd_in, cmd_path, cmd_args, NEGATIVE, envp);
         //here shouldn't we close fds when t
     }
-    j = 1;
+    j = -1;
     status = NULL;
     while (++j < all_cmds_len)
     {
@@ -113,7 +112,7 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
         if (pid == state.pid)
             stat_code = get_wait_status(status);
         else
-            get_wait_status(status);    
+            get_wait_status(status);
     }
     return (stat_code);
 }

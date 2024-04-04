@@ -6,7 +6,7 @@
 #    By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 22:21:23 by wlin              #+#    #+#              #
-#    Updated: 2024/04/04 16:15:03 by wlin             ###   ########.fr        #
+#    Updated: 2024/04/04 23:38:29 by wlin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ GNL_FILES	:=	$(SRC_DIR)/gnl/get_next_line.c \
 				$(SRC_DIR)/gnl/get_next_line_utils.c
 
 OBJ_GNL		=	$(GNL_FILES:.c=.o)
-OBJ_GNL		=	$(OBJ_GNL:.o=.d)
+DEP_GNL		=	$(OBJ_GNL:.o=.d)
 OBJ_FILES	=	$(SRC_FILES:.c=.o)
 DEP_FILES	=	$(OBJ_FILES:.o=.d)
 

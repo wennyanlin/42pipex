@@ -5,12 +5,13 @@ char    **extract_cmds(char **argv, int argc, int start)
     char    **cmds;
     int     i;
 
-    cmds = malloc(sizeof(char *) * (argc - start - 1));
+    cmds = malloc(sizeof(char *) * (argc - start));
     if (!cmds)
         return (NULL);
     i = start - 1;
     while (++i < (argc - 1))
         cmds[i - start] = argv[i];
+    cmds[i] = NULL;
     return (cmds);
 }
 
