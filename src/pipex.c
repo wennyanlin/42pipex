@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/05 20:30:26 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/05 21:54:10 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	execute_command(char *command_path, char **cmd_args, char **envp)
 		{
 			write(STDERR_FILENO, cmd_args[0], str_size(cmd_args[0]));
 			write(STDERR_FILENO, ": command not found\n", 20);
+			exit(127);
 		}
 	}
 	else
