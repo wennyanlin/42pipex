@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/04 23:32:10 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/05 19:09:57 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	execute_command(char *command_path, char **cmd_args, char **envp)
 	char	**result_array_concat = NULL;
 
 	execve(command_path, cmd_args, envp);
-	free(command_path);
-	command_path = NULL;
 	if (errno == ENOEXEC)//x
 	{
 		result_array_concat = array_concat("/bin/sh", cmd_args);

@@ -11,32 +11,29 @@ char    **extract_cmds(char **argv, int argc, int start)
     i = start - 1;
     while (++i < (argc - 1))
         cmds[i - start] = argv[i];
-    cmds[i] = NULL;
+    cmds[i - start] = NULL;
     return (cmds);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-    char    *next_line;
-    int     pipe_fd[2];
-    int     *fd_array = NULL;
     char    **cmds;
+    int     fd_infile;
+    int     fd_outfile;
     
 	if (argc < 5)
 		return (EXIT_FAILURE);
-    if (str_size(argv[1]) == 8 && string_compare(argv[1], "here_doc", 8))
+    
+    fd_outfile = create_fd_outfile(argv[argc - 1]);
+    if (str_size(argv[1]) == 8 && substr_compare(argv[1], "here_doc", 8))
     {
-        next_line = get_next_line(STDIN_FILENO);
-        pipe(pipe_fd);
-        write(pipe_fd[WR], next_line, str_size(next_line));
+        fd_infile = read_here_doc(argv[2]);
         cmds = extract_cmds(argv, argc, 3);
-        // need to open outfile
     }
     else
     {
-        fd_array = create_fd(argv[1], argv[argc - 1]);
+        fd_infile = create_fd_infile(argv[1]);
         cmds = extract_cmds(argv, argc, 2);
     }
-    //a function to pass in only commands
-    pipe_all(cmds, fd_array[0], fd_array[1], envp);
+    pipe_all(cmds, fd_infile, fd_outfile, envp);
 }

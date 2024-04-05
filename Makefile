@@ -6,7 +6,7 @@
 #    By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 22:21:23 by wlin              #+#    #+#              #
-#    Updated: 2024/04/04 23:38:29 by wlin             ###   ########.fr        #
+#    Updated: 2024/04/05 17:20:01 by wlin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 NAME_B = pipex_bonus
 
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -MMD -g
+CFLAGS := -Wall -Wextra -Werror -MMD -g -fsanitize=address
 SRC_DIR		:=	src
 
 SRC_FILES	:=	$(SRC_DIR)/main.c \
@@ -38,6 +38,7 @@ SRC_B_FILES	:=	$(SRC_DIR)/main_bonus.c \
 				$(SRC_DIR)/pipe.c \
 				$(SRC_DIR)/split.c \
 				$(SRC_DIR)/string.c \
+				$(SRC_DIR)/here_doc.c \
 
 OBJ_B_FILES	=	$(SRC_B_FILES:.c=.o)
 DEP_B_FILES	=	$(OBJ_B_FILES:.o=.d)

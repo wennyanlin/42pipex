@@ -11,24 +11,28 @@ void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_overri
 	exit(127); //modificado
 }
 
-int *create_fd(char *infile, char *outfile)
+int create_fd_infile(char *infile)
 {
-    int *fd_array;
+    int fd_infile;
 
-    fd_array = malloc(sizeof(int) * 2);
-    if (!fd_array)
-        return (NULL);
-    fd_array[0] = open(infile, O_RDONLY);
-    fd_array[1] = open(outfile, O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR
-                    | S_IRGRP | S_IROTH);
-    if (fd_array[0] == INVALID)
+    fd_infile = open(infile, O_RDONLY);
+    if (fd_infile == INVALID)
     {
         //noot handling return ???
 		perror(infile);
     }
-	if (fd_array[1] == INVALID)
+    return (fd_infile);
+}
+
+int create_fd_outfile(char *outfile)
+{
+    int fd_outfile;
+
+    fd_outfile = open(outfile, O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR
+                    | S_IRGRP | S_IROTH);
+	if (fd_outfile == INVALID)
 		perror_and_exit(outfile, EXIT_FAILURE);
-    return (fd_array);
+    return (fd_outfile);
 }
 
 t_pipe create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_override, char **envp)
@@ -74,7 +78,7 @@ int get_wait_status(int *status)
 }
 
 int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
-{   //handle command starts at [2] end at [end - 1]
+{
     int     i;
     int     j;
     int     *status;
@@ -88,7 +92,7 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
 
     i = -1;
     all_cmds_len = array_size(all_cmds);
-    state.fd_in = infile_fd; //here may need to handle if infile is invalid
+    state.fd_in = infile_fd;
     while (all_cmds[++i])
     {
         cmd_args = ft_split(all_cmds[i], ' ');
@@ -98,11 +102,10 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
         {
             state = create_process(state.fd_in, cmd_path, cmd_args, fd_out, envp);
             close(state.fd_in);
-            close(fd_out);// close outfile
+            close(fd_out);
         }
         else
             state = create_process(state.fd_in, cmd_path, cmd_args, NEGATIVE, envp);
-        //here shouldn't we close fds when t
     }
     j = -1;
     status = NULL;
