@@ -24,11 +24,14 @@ int create_fd_infile(char *infile)
     return (fd_infile);
 }
 
-int create_fd_outfile(char *outfile)
+int create_fd_outfile(char *outfile, int mode)
 {
     int fd_outfile;
-
-    fd_outfile = open(outfile, O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR
+    if (mode == TRUNC)
+        fd_outfile = open(outfile, O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR
+                    | S_IRGRP | S_IROTH);
+    else
+        fd_outfile = open(outfile, O_CREAT | O_APPEND | O_RDWR, S_IRUSR | S_IWUSR
                     | S_IRGRP | S_IROTH);
 	if (fd_outfile == INVALID)
 		perror_and_exit(outfile, EXIT_FAILURE);

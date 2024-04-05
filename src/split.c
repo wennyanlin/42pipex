@@ -125,14 +125,3 @@ char	**ft_split(char *string, char separator)
 	return (result_array);
 }
 
-// int	main(int argc, char **argv)
-// {
-// 	int i = 0;
-// 	char **result = ft_split(argv[1], ' ');
-
-// 	while (i < 4)
-// 	{
-// 		printf("%s\n", result[i]);
-// 		i++;
-// 	}
-// }

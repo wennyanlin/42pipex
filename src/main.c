@@ -27,7 +27,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 5)
 		return (EXIT_FAILURE);
     fd_infile = create_fd_infile(argv[1]);
-    fd_outfile = create_fd_outfile(argv[argc - 1]);
+    fd_outfile = create_fd_outfile(argv[argc - 1], TRUNC);
     cmds = extract_cmds(argv, argc, 2);
     stat_code = pipe_all(cmds, fd_infile, fd_outfile, envp);
     return (stat_code);
