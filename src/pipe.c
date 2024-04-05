@@ -50,6 +50,12 @@ t_pipe create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_ove
         perror_and_exit("fork", EXIT_FAILURE);
     else if (state.pid == CHILD)
     {
+        if (access(cmd_path, X_OK) == -1 && access(cmd_path, F_OK) == 0)
+        {
+            write(STDERR_FILENO, cmd_args[0], str_size(cmd_args[0]));
+            write(STDERR_FILENO, ": permission denied\n", 20);
+            exit (126);
+        }
         if (fd_in == -1)
         {
             state.fd_in = -1;
