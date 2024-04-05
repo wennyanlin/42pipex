@@ -55,7 +55,7 @@ t_pipe create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_ove
             state.fd_in = -1;
             close(pipe_fd[WR]);
             close(pipe_fd[RD]);
-            exit(127);
+            exit (127);
         }
         fd_dup2(fd_in, STDIN_FILENO);
         child_process(pipe_fd, cmd_path, cmd_args, fd_out_override, envp);
@@ -66,7 +66,7 @@ t_pipe create_process(int fd_in, char *cmd_path, char **cmd_args, int fd_out_ove
     return (state);
 }
 
-int get_wait_status(int *status)
+int get_wait_status(int status)
 {
     int stat_code;
 
@@ -84,7 +84,7 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
 {
     int     i;
     int     j;
-    int     *status;
+    int     status;
     int     stat_code;
     pid_t   pid;
     char    *cmd_path;
@@ -104,21 +104,32 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
         if (i == all_cmds_len - 1)
         {
             state = create_process(state.fd_in, cmd_path, cmd_args, fd_out, envp);
+            // printf("started last command '%s', pid: %d\n", cmd_args[0], state.pid);
             close(state.fd_in);
             close(fd_out);
         }
         else
+        {
             state = create_process(state.fd_in, cmd_path, cmd_args, NEGATIVE, envp);
+            // printf("started command '%s', pid: %d\n", cmd_args[0], state.pid);
+        }
     }
     j = -1;
-    status = NULL;
+
     while (++j < all_cmds_len)
     {
-        pid = wait(NULL);
+        // printf("waiting\n");
+        pid = wait(&status);
+        // printf("finished: %d\n", pid);
         if (pid == state.pid)
+        {
             stat_code = get_wait_status(status);
+            // printf("last finished: %d, status: %d\n", pid, stat_code);
+        }
         else
+        {
             get_wait_status(status);
+        }
     }
-    return (stat_code);
+    exit (stat_code);
 }
