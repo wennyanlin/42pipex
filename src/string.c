@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/05 18:52:00 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 00:38:07 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,23 @@ int	substr_compare(char *str1, char *str2, int until)
 	return (1);
 }
 
+char	*str_cpy(char *src)
+{
+	int	i;
+	int	src_len;
+	char *copy;
+
+	i = -1;
+	src_len = str_size(src);
+	copy = malloc(sizeof(char) * (src_len + 1));
+	if (!copy)
+		return (NULL);
+	while (src[++i])
+		copy[i] = src[i];
+	copy[i] = '\0';
+	return (copy);
+}
+
 
 char	*get_env(char **strs, char *ref)
 {
@@ -46,6 +63,7 @@ char	*get_env(char **strs, char *ref)
 	int		until;
 	int		ref_len;
 	char	**array;
+	char	*env_value;
 	
 	i = 0;
 	ref_len = str_size(ref);
@@ -57,7 +75,9 @@ char	*get_env(char **strs, char *ref)
 			array = ft_split(strs[i], '=');
 			if (!array || !array[1])
 				return (NULL);
-			return (array[1]);
+			env_value = str_cpy(array[1]);
+			free_array(array);
+			return (env_value);
 		}
 		i++;
 	}

@@ -20,6 +20,7 @@ int	main(int argc, char **argv, char **envp)
     char    **cmds;
     int     fd_infile;
     int     fd_outfile;
+    int     pipe_stat_code;
     
 	if (argc < 5)
 		return (EXIT_FAILURE);
@@ -35,5 +36,7 @@ int	main(int argc, char **argv, char **envp)
         fd_outfile = create_fd_outfile(argv[argc - 1], TRUNC);
         cmds = extract_cmds(argv, argc, 2);
     }
-    return (pipe_all(cmds, fd_infile, fd_outfile, envp));
+    pipe_stat_code = pipe_all(cmds, fd_infile, fd_outfile, envp);
+    free_array(cmds);
+    return (pipe_stat_code);
 }

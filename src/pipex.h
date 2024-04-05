@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/05 21:27:16 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 00:54:10 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char 	*make_path(char *dir, char *cmd);
 int		char_index(char *str, char ref);
 int 	read_here_doc(char *limiter);
 int		check_limiter(char *next_line, char *limiter);
+char	*str_cpy(char *src);
 
 #endif
 

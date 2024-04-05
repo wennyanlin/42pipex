@@ -12,8 +12,6 @@
 
 #include "pipex.h"
 
-
-
 int	count_words(char *string, char separator)
 {
 	int	count_word;
@@ -43,7 +41,7 @@ t_str	parse_string(char *string, char separator, int	continue_from)
 	i = continue_from;
 	len = 0;
 	next_word.value = NULL;
-	while (string[i]) // i = 9
+	while (string[i])
 	{
 		if (string[i] && string[i] == separator)
 			i++;
@@ -115,9 +113,6 @@ char	**ft_split(char *string, char separator)
 		return (NULL);
 	while (i < num_words)
 	{
-		result_array[i] = malloc(sizeof(char));
-		if (!result_array[i])
-			return (NULL);
 		word = get_next_word(string, separator, word.continue_from_index);
 		result_array[i++] = word.value;
 	}

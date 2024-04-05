@@ -30,5 +30,6 @@ int	main(int argc, char **argv, char **envp)
     fd_outfile = create_fd_outfile(argv[argc - 1], TRUNC);
     cmds = extract_cmds(argv, argc, 2);
     stat_code = pipe_all(cmds, fd_infile, fd_outfile, envp);
+    free_array(cmds);
     return (stat_code);
 }

@@ -8,7 +8,7 @@ void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_overri
     else
 	    fd_dup2(pipefd[WR], STDOUT_FILENO);
 	execute_command(cmd1, cmd_args, envp);
-	exit(127); //modificado
+	exit(127);
 }
 
 int create_fd_infile(char *infile)
@@ -17,10 +17,7 @@ int create_fd_infile(char *infile)
 
     fd_infile = open(infile, O_RDONLY);
     if (fd_infile == INVALID)
-    {
-        //noot handling return ???
 		perror(infile);
-    }
     return (fd_infile);
 }
 
@@ -105,37 +102,30 @@ int    pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp)
     while (all_cmds[++i])
     {
         cmd_args = ft_split(all_cmds[i], ' ');
+        if (!cmd_args)
+            return (EXIT_FAILURE);
         all_paths = get_env(envp, "PATH");
         cmd_path = find_path(all_paths, cmd_args[0]);
+        free(all_paths);
         if (i == all_cmds_len - 1)
         {
             state = create_process(state.fd_in, cmd_path, cmd_args, fd_out, envp);
-            // printf("started last command '%s', pid: %d\n", cmd_args[0], state.pid);
             close(state.fd_in);
             close(fd_out);
         }
         else
-        {
             state = create_process(state.fd_in, cmd_path, cmd_args, NEGATIVE, envp);
-            // printf("started command '%s', pid: %d\n", cmd_args[0], state.pid);
-        }
+        free(cmd_path);
+        free_array(cmd_args);
     }
     j = -1;
-
     while (++j < all_cmds_len)
     {
-        // printf("waiting\n");
         pid = wait(&status);
-        // printf("finished: %d\n", pid);
         if (pid == state.pid)
-        {
             stat_code = get_wait_status(status);
-            // printf("last finished: %d, status: %d\n", pid, stat_code);
-        }
         else
-        {
             get_wait_status(status);
-        }
     }
     exit (stat_code);
 }
