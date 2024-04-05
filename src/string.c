@@ -6,13 +6,13 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/03 23:53:19 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/05 18:52:00 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_strchr(char *str, char ref)
+int	char_index(char *str, char ref)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ int	ft_strchr(char *str, char ref)
 	return (-1);
 }
 
-int	string_compare(char *str1, char *str2, int until)
+int	substr_compare(char *str1, char *str2, int until)
 {
 	int	i;
 
@@ -48,11 +48,11 @@ char	*get_env(char **strs, char *ref)
 	char	**array;
 	
 	i = 0;
-	ref_len = ft_strlen(ref);
+	ref_len = str_size(ref);
 	while (strs[i])
 	{
-		until = ft_strchr(strs[i], '=');
-		if (until == ref_len && string_compare(strs[i], ref, until))
+		until = char_index(strs[i], '=');
+		if (until == ref_len && substr_compare(strs[i], ref, until))
 		{
 			array = ft_split(strs[i], '=');
 			if (!array || !array[1])
@@ -64,9 +64,9 @@ char	*get_env(char **strs, char *ref)
 	return (NULL);
 }
 
-size_t	ft_strlen(char *str)
+int	str_size(const char *str)
 {
-	size_t	len;
+	int	len;
 
 	len = 0;
 	if (!str)
@@ -74,6 +74,16 @@ size_t	ft_strlen(char *str)
 	while (str[len])
 		len++;
 	return(len);
+}
+
+int	array_size(char **array)
+{
+	int	i;
+	
+	i = 0;
+	while (array[i])
+		i++;
+	return (i);
 }
 
 char	*string_concat(char *path, char *cmd)
@@ -84,8 +94,8 @@ char	*string_concat(char *path, char *cmd)
 	size_t	total_len;
 	size_t	i;
 
-	path_len = ft_strlen(path);
-	cmd_len = ft_strlen(cmd);
+	path_len = str_size(path);
+	cmd_len = str_size(cmd);
 	total_len = path_len + cmd_len;
 	result_path = malloc(sizeof(char) * (total_len + 1));
 	if (!result_path)

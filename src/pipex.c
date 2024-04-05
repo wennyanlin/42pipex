@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/03 23:55:13 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/05 20:30:26 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,8 @@ void	execute_command(char *command_path, char **cmd_args, char **envp)
 	char	**result_array_concat = NULL;
 
 	execve(command_path, cmd_args, envp);
-	free(command_path);
-	command_path = NULL;
-	
-	if (errno == ENOEXEC)//x
+	if (errno == ENOEXEC)
 	{
-		// printf("attempting with bash\n");
 		result_array_concat = array_concat("/bin/sh", cmd_args);
 		execve("/bin/sh", result_array_concat, envp);
 		free_array(cmd_args);
@@ -80,11 +76,11 @@ void	execute_command(char *command_path, char **cmd_args, char **envp)
 	}
 	else if (errno == ENOENT)
 	{
-		if (ft_strchr(cmd_args[0], '/') != INVALID)
+		if (char_index(cmd_args[0], '/') != INVALID)
 			perror(cmd_args[0]);
 		else
 		{
-			write(STDERR_FILENO, cmd_args[0], ft_strlen(cmd_args[0]));
+			write(STDERR_FILENO, cmd_args[0], str_size(cmd_args[0]));
 			write(STDERR_FILENO, ": command not found\n", 20);
 		}
 	}
