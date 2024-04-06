@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/06 13:38:55 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 15:10:10 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 typedef struct s_str
 {
 	char	*value;
+	char	**empty;
 	int		continue_from_index;
 }			t_str;
 
@@ -45,14 +46,14 @@ typedef struct s_pipe
 	int		num_cmds;
 	int		cmd_idx;
 	int		fd_in;
+	char	*cmd_path;
+	char	**cmd_args;
 }			t_pipe;
 
 //PROT
 void	execute_command(char *cmd1, char **cmd_args, char **envp);
 char	**ft_split(char *string, char separator);
 int		count_words(char *string, char separator);
-t_str	get_next_word(char *string, char separator, int continue_from);
-t_str	parse_string(char *string, char separator, int continue_from);
 char	*string_concat(char *path, char *cmd);
 int		str_size(const char *str);
 char	*find_path(char *env, char *cmd);
@@ -64,7 +65,6 @@ void	perror_and_exit(char *file, int code);
 // void	child_process(int pipefd[2], char *cmd1, char **envp);
 // void	parent_process(int pipefd[2], int fd2, char *cmd2, char **envp);
 void	fd_dup2(int oldfd, int newfd);
-t_str	chars_copy(t_str result, char *string, int len, int end);
 int		is_empty_command(char *cmd);
 void	free_array(char **array);
 void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override, char **envp);
@@ -78,6 +78,9 @@ int 	read_here_doc(char *limiter);
 int		check_limiter(char *next_line, char *limiter);
 char	*str_cpy(char *src);
 t_pipe	init_state(int pid_arr_size, int fd_infile);
+char    **extract_cmds(char **argv, int argc, int start);
+int 	get_wait_status(int status);
+void	create_process(t_pipe *state, char *cmd_path, char **cmd_args, int fd_out_override, char **envp);
 
 #endif
 

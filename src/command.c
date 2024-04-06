@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/06 01:15:33 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 14:31:55 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,6 @@ void	perror_and_exit(char *file, int code)
 {
 	perror(file);
 	exit(code);
-}
-
-void	fd_dup2(int oldfd, int newfd)
-{
-	if (oldfd != -1 && dup2(oldfd, newfd) == -1)
-	{
-		close(oldfd);
-		perror_and_exit("dup2", EXIT_FAILURE);
-	}
-	close(oldfd);
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-		free(array[i++]);
-	free(array);
 }
 
 int	is_empty_command(char *cmd)
@@ -58,6 +38,32 @@ int	is_empty_command(char *cmd)
 		i++;
 	}
 	return (flag);
+}
+
+t_pipe    init_state(int pid_arr_size, int fd_infile)
+{
+    t_pipe  state;
+
+    state.cmd_idx = -1;
+    state.fd_in = fd_infile;
+    state.num_cmds = pid_arr_size;
+    state.pid_arr = malloc(sizeof(pid_t) * pid_arr_size);
+    return (state);
+}
+
+char    **extract_cmds(char **argv, int argc, int start)
+{
+    char    **cmds;
+    int     i;
+
+    cmds = malloc(sizeof(char *) * (argc - start));
+    if (!cmds)
+        return (NULL);
+    i = start - 1;
+    while (++i < (argc - 1))
+        cmds[i - start] = argv[i];
+    cmds[i - start] = NULL;
+    return (cmds);
 }
 
 void	execute_command(char *command_path, char **cmd_args, char **envp)

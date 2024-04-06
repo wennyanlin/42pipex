@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/06 00:38:07 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 14:29:30 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,34 +56,6 @@ char	*str_cpy(char *src)
 	return (copy);
 }
 
-
-char	*get_env(char **strs, char *ref)
-{
-	int		i;
-	int		until;
-	int		ref_len;
-	char	**array;
-	char	*env_value;
-	
-	i = 0;
-	ref_len = str_size(ref);
-	while (strs[i])
-	{
-		until = char_index(strs[i], '=');
-		if (until == ref_len && substr_compare(strs[i], ref, until))
-		{
-			array = ft_split(strs[i], '=');
-			if (!array || !array[1])
-				return (NULL);
-			env_value = str_cpy(array[1]);
-			free_array(array);
-			return (env_value);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
 int	str_size(const char *str)
 {
 	int	len;
@@ -94,16 +66,6 @@ int	str_size(const char *str)
 	while (str[len])
 		len++;
 	return(len);
-}
-
-int	array_size(char **array)
-{
-	int	i;
-	
-	i = 0;
-	while (array[i])
-		i++;
-	return (i);
 }
 
 char	*string_concat(char *path, char *cmd)
@@ -131,28 +93,4 @@ char	*string_concat(char *path, char *cmd)
 		result_path[i++] = cmd[cmd_len++];
 	result_path[i] = '\0';
 	return (result_path);
-}
-
-char	**array_concat(char *shell_path, char **args)
-{
-	char 	**result_args;
-	int		len;
-	int		i;
-
-	len = 0;
-	i = 0;
-	while (args[len])
-		len++;
-	result_args = malloc(sizeof(char*) * (len + 2));
-	if (!result_args)
-		return (NULL);
-	result_args[i] = shell_path;
-	i++;
-	while (i < len + 1)
-	{
-		result_args[i] = args[i - 1];
-		i++;
-	}
-	result_args[i] = NULL;
-	return (result_args);
 }

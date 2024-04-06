@@ -31,6 +31,18 @@ int	count_words(char *string, char separator)
 	return (count_word);
 }
 
+t_str	chars_copy(t_str result, char *string, int start, int end)
+{
+	int	i;
+
+	i = 0;
+	while (start < end)
+		result.value[i++] = string[start++];
+	result.value[i] = '\0';
+	result.continue_from_index = start + 1;
+	return (result);
+}
+
 t_str	parse_string(char *string, char separator, int	continue_from)
 {
 	int		i;
@@ -55,18 +67,6 @@ t_str	parse_string(char *string, char separator, int	continue_from)
 		return (next_word);
 	}
 	return (next_word);
-}
-
-t_str	chars_copy(t_str result, char *string, int start, int end)
-{
-	int	i;
-
-	i = 0;
-	while (start < end)
-		result.value[i++] = string[start++];
-	result.value[i] = '\0';
-	result.continue_from_index = start + 1;
-	return (result);
 }
 
 t_str	get_next_word(char *string, char separator, int	continue_from)
@@ -96,16 +96,15 @@ char	**ft_split(char *string, char separator)
 	int		num_words;
 	int		i;
 	t_str	word;
-	char	**empty;
 
 	i = 0;
 	word.continue_from_index = 0;
 	if (!*string)
 	{
-		empty = malloc(sizeof(char*) * 2);
-		empty[0] = "";
-		empty[1] = NULL;
-		return (empty);
+		word.empty = malloc(sizeof(char*) * 2);
+		word.empty[0] = "";
+		word.empty[1] = NULL;
+		return (word.empty);
 	}
 	num_words = count_words(string, separator);
 	result_array = malloc(sizeof(char*) * (num_words + 1));

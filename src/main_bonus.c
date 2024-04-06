@@ -1,22 +1,5 @@
 #include "pipex.h"
 
-char    **extract_cmds(char **argv, int argc, int start)
-{
-    char    **cmds;
-    int     i;
-
-    cmds = malloc(sizeof(char *) * (argc - start));
-    if (!cmds)
-        return (NULL);
-    i = start - 1;
-    while (++i < (argc - 1))
-        cmds[i - start] = argv[i];
-    cmds[i - start] = NULL;
-    return (cmds);
-}
-
-
-
 int	main(int argc, char **argv, char **envp)
 {
     char    **cmds;
