@@ -23,8 +23,8 @@ char	*find_path(char *env, char *cmd)
 	if (char_index(cmd, '/') != INVALID)
 		return (str_cpy(cmd));
 	path_dirs = ft_split(env, ':');
-	i = 0;
-	while (path_dirs[i])
+	i = -1;
+	while (path_dirs[++i])
 	{
 		full_path = make_path(path_dirs[i], cmd);
 		if (access(full_path, X_OK) == 0)
@@ -34,7 +34,6 @@ char	*find_path(char *env, char *cmd)
 		}
 		free(full_path);
 		full_path = NULL;
-		i++;
 	}
 	free_array(path_dirs);
 	path_dirs = NULL;

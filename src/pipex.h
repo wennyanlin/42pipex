@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/06 00:54:10 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 13:38:55 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ typedef struct s_str
 
 typedef struct s_pipe
 {
-	pid_t	pid;
+	pid_t	*pid_arr;
+	int		num_cmds;
+	int		cmd_idx;
 	int		fd_in;
 }			t_pipe;
 
@@ -68,13 +70,14 @@ void	free_array(char **array);
 void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override, char **envp);
 int 	create_fd_infile(char *infile);
 int 	create_fd_outfile(char *outile, int mode);
-int		pipe_all(char **all_cmds, int infile_fd, int fd_out, char **envp);
+int		pipe_all(char **all_cmds, t_pipe *state, int fd_out, char **envp);
 int		array_size(char **array);
 char 	*make_path(char *dir, char *cmd);
 int		char_index(char *str, char ref);
 int 	read_here_doc(char *limiter);
 int		check_limiter(char *next_line, char *limiter);
 char	*str_cpy(char *src);
+t_pipe	init_state(int pid_arr_size, int fd_infile);
 
 #endif
 
