@@ -1,33 +1,54 @@
 #include "pipex.h"
 
-int    pipe_all(char **all_cmds, t_pipe *state, int fd_out, char **envp)
+void	perror_and_exit(char *file, int code)
+{
+	perror(file);
+	exit(code);
+}
+
+t_pipe    init_state(int pid_arr_size, int fd_infile, char **envp)
+{
+    t_pipe  state;
+
+    state.envp = envp;
+    state.cmd_idx = -1;
+    state.fd_in = fd_infile;
+    state.num_cmds = pid_arr_size;
+    state.pid_arr = malloc(sizeof(pid_t) * pid_arr_size);
+    return (state);
+}
+
+void    parse_command(t_pipe *state, char **all_cmds)
+{
+    char    *all_paths;
+
+    state->cmd_args = ft_split(all_cmds[state->cmd_idx], ' ');
+    if (!state->cmd_args)
+        exit (EXIT_FAILURE);
+    all_paths = get_env(state->envp, "PATH");
+    state->cmd_path = find_path(all_paths, state->cmd_args[0]);
+    free(all_paths);
+}
+
+int    pipe_all(char **all_cmds, t_pipe *state, int fd_out)
 {
     int     i;
     int     status;
     int     stat_code;
-    char    *cmd_path;
-    char    **cmd_args;
-    char    *all_paths;
-
-    i = -1;
-    while (all_cmds[++i])
+    
+    while (all_cmds[++(state->cmd_idx)])
     {
-        cmd_args = ft_split(all_cmds[i], ' ');
-        if (!cmd_args)
-            return (EXIT_FAILURE);
-        all_paths = get_env(envp, "PATH");
-        cmd_path = find_path(all_paths, cmd_args[0]);
-        free(all_paths);
-        if (i == state->num_cmds - 1)
+        parse_command(state, all_cmds);
+        if (state->cmd_idx == state->num_cmds - 1)
         {
-            create_process(state, cmd_path, cmd_args, fd_out, envp);
+            create_process(state, fd_out);
             close(state->fd_in);
             close(fd_out);
         }
         else
-            create_process(state, cmd_path, cmd_args, NEGATIVE, envp);
-        free(cmd_path);
-        free_array(cmd_args);
+            create_process(state, NEGATIVE);
+        free(state->cmd_path);
+        free_array(state->cmd_args);
     }
     i = -1;
     while (++i < state->num_cmds)

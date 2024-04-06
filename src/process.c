@@ -14,18 +14,33 @@ int get_wait_status(int status)
     return (stat_code);
 }
 
-void	child_process(int pipefd[2], char *cmd1, char **cmd_args, int fd_out_override, char **envp)
+void	child_process(int pipe_fd[2], t_pipe *state, int fd_out_override)
 {
-	close(pipefd[RD]);
+    if (access(state->cmd_path, X_OK) == -1
+        && access(state->cmd_path, F_OK) == 0)
+    {
+        write(STDERR_FILENO, state->cmd_args[0], str_size(state->cmd_args[0]));
+        write(STDERR_FILENO, ": permission denied\n", 20);
+        exit (126);
+    }
+    if (state->fd_in == -1)
+    {
+        state->fd_in = -1;
+        close(pipe_fd[WR]);
+        close(pipe_fd[RD]);
+        exit (127);
+    }
+    fd_dup2(state->fd_in, STDIN_FILENO);
+	close(pipe_fd[RD]);
     if (fd_out_override != NEGATIVE)
         fd_dup2(fd_out_override, STDOUT_FILENO);
     else
-	    fd_dup2(pipefd[WR], STDOUT_FILENO);
-	execute_command(cmd1, cmd_args, envp);
+	    fd_dup2(pipe_fd[WR], STDOUT_FILENO);
+	execute_command(state->cmd_path, state->cmd_args, state->envp);
 	exit(127);
 }
 
-void create_process(t_pipe *state, char *cmd_path, char **cmd_args, int fd_out_override, char **envp)
+void create_process(t_pipe *state, int fd_out_override)
 {
     int     pipe_fd[2];
     pid_t   pid;
@@ -36,24 +51,8 @@ void create_process(t_pipe *state, char *cmd_path, char **cmd_args, int fd_out_o
     if (pid == INVALID)
         perror_and_exit("fork", EXIT_FAILURE);
     else if (pid == CHILD)
-    {
-        if (access(cmd_path, X_OK) == -1 && access(cmd_path, F_OK) == 0)
-        {
-            write(STDERR_FILENO, cmd_args[0], str_size(cmd_args[0]));
-            write(STDERR_FILENO, ": permission denied\n", 20);
-            exit (126);
-        }
-        if (state->fd_in == -1)
-        {
-            state->fd_in = -1;
-            close(pipe_fd[WR]);
-            close(pipe_fd[RD]);
-            exit (127);
-        }
-        fd_dup2(state->fd_in, STDIN_FILENO);
-        child_process(pipe_fd, cmd_path, cmd_args, fd_out_override, envp);
-    }
-    state->pid_arr[++(state->cmd_idx)] = pid;
+        child_process(pipe_fd, state, fd_out_override);
+    state->pid_arr[state->cmd_idx] = pid;
     close(state->fd_in);
     state->fd_in = pipe_fd[RD];
     close(pipe_fd[WR]);

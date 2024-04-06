@@ -81,9 +81,7 @@ t_str	get_next_word(char *string, char separator, int	continue_from)
 		while (string[i] && string[i] == separator)
 			i++;
 		if (string[i] && string[i] == '"')
-		{
 			return (parse_string(string, '"', i));
-		}
 		else
 			return (parse_string(string, separator, i));
 	}

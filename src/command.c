@@ -6,17 +6,11 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/06 14:31:55 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 15:50:35 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	perror_and_exit(char *file, int code)
-{
-	perror(file);
-	exit(code);
-}
 
 int	is_empty_command(char *cmd)
 {
@@ -38,17 +32,6 @@ int	is_empty_command(char *cmd)
 		i++;
 	}
 	return (flag);
-}
-
-t_pipe    init_state(int pid_arr_size, int fd_infile)
-{
-    t_pipe  state;
-
-    state.cmd_idx = -1;
-    state.fd_in = fd_infile;
-    state.num_cmds = pid_arr_size;
-    state.pid_arr = malloc(sizeof(pid_t) * pid_arr_size);
-    return (state);
 }
 
 char    **extract_cmds(char **argv, int argc, int start)

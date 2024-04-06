@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:17 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/06 14:29:30 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/06 16:03:58 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ int	substr_compare(char *str1, char *str2, int until)
 {
 	int	i;
 
-	i = 0;
-	while (i < until)
-	{
+	i = -1;
+	while (++i < until)
 		if (str2[i] != str1[i])
 			return (0);
-		i++;
-	}
 	return (1);
 }
 
@@ -82,12 +79,9 @@ char	*string_concat(char *path, char *cmd)
 	result_path = malloc(sizeof(char) * (total_len + 1));
 	if (!result_path)
 		return (NULL);
-	i = 0;
-	while (i < path_len)
-	{
+	i = -1;
+	while (++i < path_len)
 		result_path[i] = path[i];
-		i++;
-	}
 	cmd_len = 0;
 	while (i < total_len)
 		result_path[i++] = cmd[cmd_len++];

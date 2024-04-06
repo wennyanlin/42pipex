@@ -12,9 +12,9 @@ int	main(int argc, char **argv, char **envp)
 		return (EXIT_FAILURE);
     fd_infile = create_fd_infile(argv[1]);
     fd_outfile = create_fd_outfile(argv[argc - 1], TRUNC);
-    state = init_state((argc - 3), fd_infile);
+    state = init_state((argc - 3), fd_infile, envp);
     cmds = extract_cmds(argv, argc, 2);
-    stat_code = pipe_all(cmds, &state, fd_outfile, envp);
+    stat_code = pipe_all(cmds, &state, fd_outfile);
     free_array(cmds);
     return (stat_code);
 }
