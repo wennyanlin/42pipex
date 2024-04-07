@@ -24,8 +24,7 @@ void	child_process(int pipe_fd[2], t_pipe *state, int fd_out_override)
         exit (126);
     }
     if (state->fd_in == -1)
-    {
-        state->fd_in = -1;
+    { 
         close(pipe_fd[WR]);
         close(pipe_fd[RD]);
         exit (127);
