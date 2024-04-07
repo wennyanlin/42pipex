@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_path.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/07 11:41:56 by wlin              #+#    #+#             */
+/*   Updated: 2024/04/07 11:45:51 by wlin             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-char *make_path(char *dir, char *cmd)
+char	*make_path(char *dir, char *cmd)
 {
-	char *full_dir;
-	char *full_path;
+	char	*full_dir;
+	char	*full_path;
 
 	full_dir = string_concat(dir, "/");
 	full_path = string_concat(full_dir, cmd);
@@ -18,7 +30,7 @@ char	*get_env(char **strs, char *ref)
 	int		ref_len;
 	char	**array;
 	char	*env_value;
-	
+
 	i = 0;
 	ref_len = str_size(ref);
 	while (strs[i])
@@ -38,15 +50,14 @@ char	*get_env(char **strs, char *ref)
 	return (NULL);
 }
 
-//recieve the variable PATH, trying to find the correct path which contains the command
 char	*find_path(char *env, char *cmd)
 {
 	int		i;
-	char 	*full_path;
-	char 	**path_dirs;
+	char	*full_path;
+	char	**path_dirs;
 
 	if (!env)
-		return (str_cpy(cmd));	
+		return (str_cpy(cmd));
 	if (char_index(cmd, '/') != INVALID)
 		return (str_cpy(cmd));
 	path_dirs = ft_split(env, ':');

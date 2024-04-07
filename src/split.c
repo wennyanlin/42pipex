@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                            :+:      :+:    :+:   */
+/*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:15 by wlin              #+#    #+#             */
-/*   Updated: 2024/03/31 22:10:56 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/07 11:47:59 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_str	chars_copy(t_str result, char *string, int start, int end)
 	return (result);
 }
 
-t_str	parse_string(char *string, char separator, int	continue_from)
+t_str	parse_string(char *string, char separator, int continue_from)
 {
 	int		i;
 	int		len;
@@ -69,7 +69,7 @@ t_str	parse_string(char *string, char separator, int	continue_from)
 	return (next_word);
 }
 
-t_str	get_next_word(char *string, char separator, int	continue_from)
+t_str	get_next_word(char *string, char separator, int continue_from)
 {
 	int		i;
 	t_str	next_word;
@@ -99,13 +99,13 @@ char	**ft_split(char *string, char separator)
 	word.continue_from_index = 0;
 	if (!*string)
 	{
-		word.empty = malloc(sizeof(char*) * 2);
+		word.empty = malloc(sizeof (char *) * 2);
 		word.empty[0] = "";
 		word.empty[1] = NULL;
 		return (word.empty);
 	}
 	num_words = count_words(string, separator);
-	result_array = malloc(sizeof(char*) * (num_words + 1));
+	result_array = malloc(sizeof (char *) * (num_words + 1));
 	if (!result_array)
 		return (NULL);
 	while (i < num_words)
@@ -116,4 +116,3 @@ char	**ft_split(char *string, char separator)
 	result_array[i] = NULL;
 	return (result_array);
 }
-

@@ -1,27 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/07 11:41:44 by wlin              #+#    #+#             */
+/*   Updated: 2024/04/07 11:45:06 by wlin             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-int create_fd_infile(char *infile)
+int	create_fd_infile(char *infile)
 {
-    int fd_infile;
+	int	fd_infile;
 
-    fd_infile = open(infile, O_RDONLY);
-    if (fd_infile == INVALID)
+	fd_infile = open(infile, O_RDONLY);
+	if (fd_infile == INVALID)
 		perror(infile);
-    return (fd_infile);
+	return (fd_infile);
 }
 
-int create_fd_outfile(char *outfile, int mode)
+int	create_fd_outfile(char *outfile, int mode)
 {
-    int fd_outfile;
-    if (mode == TRUNC)
-        fd_outfile = open(outfile, O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR
-                    | S_IRGRP | S_IROTH);
-    else
-        fd_outfile = open(outfile, O_CREAT | O_APPEND | O_RDWR, S_IRUSR | S_IWUSR
-                    | S_IRGRP | S_IROTH);
+	int	fd_outfile;
+
+	if (mode == TRUNC)
+		fd_outfile = open(outfile, O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR
+				| S_IRGRP | S_IROTH);
+	else
+		fd_outfile = open(outfile, O_CREAT | O_APPEND | O_RDWR, S_IRUSR
+				| S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd_outfile == INVALID)
 		perror_and_exit(outfile, EXIT_FAILURE);
-    return (fd_outfile);
+	return (fd_outfile);
 }
 
 void	fd_dup2(int oldfd, int newfd)

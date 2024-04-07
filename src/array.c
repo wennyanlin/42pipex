@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   array.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/07 11:39:33 by wlin              #+#    #+#             */
+/*   Updated: 2024/04/07 11:40:24 by wlin             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	free_array(char **array)
@@ -13,7 +25,7 @@ void	free_array(char **array)
 int	array_size(char **array)
 {
 	int	i;
-	
+
 	i = 0;
 	while (array[i])
 		i++;
@@ -22,7 +34,7 @@ int	array_size(char **array)
 
 char	**array_concat(char *shell_path, char **args)
 {
-	char 	**result_args;
+	char	**result_args;
 	int		len;
 	int		i;
 
@@ -30,7 +42,7 @@ char	**array_concat(char *shell_path, char **args)
 	i = 0;
 	while (args[len])
 		len++;
-	result_args = malloc(sizeof(char*) * (len + 2));
+	result_args = malloc(sizeof (char *) * (len + 2));
 	if (!result_args)
 		return (NULL);
 	result_args[i] = shell_path;

@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:20:59 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/07 02:04:17 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/07 11:41:18 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,24 @@ int	is_empty_command(char *cmd)
 	return (flag);
 }
 
-char    **extract_cmds(char **argv, int argc, int start)
+char	**extract_cmds(char **argv, int argc, int start)
 {
-    char    **cmds;
-    int     i;
+	char	**cmds;
+	int		i;
 
-    cmds = malloc(sizeof(char *) * (argc - start));
-    if (!cmds)
-        return (NULL);
-    i = start - 1;
-    while (++i < (argc - 1))
-        cmds[i - start] = argv[i];
-    cmds[i - start] = NULL;
-    return (cmds);
+	cmds = malloc(sizeof(char *) * (argc - start));
+	if (!cmds)
+		return (NULL);
+	i = start - 1;
+	while (++i < (argc - 1))
+		cmds[i - start] = argv[i];
+	cmds[i - start] = NULL;
+	return (cmds);
 }
 
 void	execute_command(char *command_path, char **cmd_args, char **envp)
 {
-	char	**result_array_concat = NULL;
+	char	**result_array_concat;
 
 	execve(command_path, cmd_args, envp);
 	if (errno == ENOEXEC)

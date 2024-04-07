@@ -6,7 +6,7 @@
 #    By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 22:21:23 by wlin              #+#    #+#              #
-#    Updated: 2024/04/06 14:33:46 by wlin             ###   ########.fr        #
+#    Updated: 2024/04/07 11:38:05 by wlin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ SRC_B_FILES	:=	$(SRC_DIR)/main_bonus.c \
 OBJ_B_FILES	=	$(SRC_B_FILES:.c=.o)
 DEP_B_FILES	=	$(OBJ_B_FILES:.o=.d)
 
-%.o:%.c 	src/pipex.h Makefile
+%.o:%.c		src/pipex.h Makefile
 			$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME) 

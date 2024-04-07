@@ -6,7 +6,7 @@
 /*   By: wlin <wlin@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:21:10 by wlin              #+#    #+#             */
-/*   Updated: 2024/04/06 15:55:55 by wlin             ###   ########.fr       */
+/*   Updated: 2024/04/07 11:43:19 by wlin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,18 @@ void	perror_and_exit(char *file, int code);
 void	fd_dup2(int oldfd, int newfd);
 int		is_empty_command(char *cmd);
 void	free_array(char **array);
-int 	create_fd_infile(char *infile);
-int 	create_fd_outfile(char *outile, int mode);
+int		create_fd_infile(char *infile);
+int		create_fd_outfile(char *outile, int mode);
 int		pipe_all(char **all_cmds, t_pipe *state, int fd_out);
 int		array_size(char **array);
-char 	*make_path(char *dir, char *cmd);
+char	*make_path(char *dir, char *cmd);
 int		char_index(char *str, char ref);
-int 	read_here_doc(char *limiter);
+int		read_here_doc(char *limiter);
 int		check_limiter(char *next_line, char *limiter);
 char	*str_cpy(char *src);
 t_pipe	init_state(int pid_arr_size, int fd_infile, char **envp);
-char    **extract_cmds(char **argv, int argc, int start);
-int 	get_wait_status(int status);
+char	**extract_cmds(char **argv, int argc, int start);
+int		get_wait_status(int status);
 void	create_process(t_pipe *state, int fd_out_override);
 
 #endif
-
